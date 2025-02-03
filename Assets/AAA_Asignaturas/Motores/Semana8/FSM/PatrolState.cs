@@ -12,13 +12,15 @@ public class PatrolState : State<EnemyController>
     [SerializeField]
     private float tiempoDeEspera;
 
+    [SerializeField]
+    private float patrolSpeed;
+
 
     private List<Vector3> puntosDeRuta = new List<Vector3>();
     private int indicePuntoActual = 0; //Marca el índice de la lista
 
     private Vector3 destinoActual; //Marca mi destino actual.
 
-    public event Action OnPatrolling;
 
     public override void OnEnterState(EnemyController controller)
     {
@@ -30,12 +32,16 @@ public class PatrolState : State<EnemyController>
         }
 
         destinoActual = puntosDeRuta[indicePuntoActual];
+
+        controller.Agent.stoppingDistance = 0f;
+        controller.Agent.speed = patrolSpeed;
+
         StartCoroutine(PatrullarYEsperar());
 
     }
     public override void OnUpdateState()
     {
-        OnPatrolling?.Invoke();
+        controller.Anim.SetFloat("velocity", (controller.Agent.velocity.magnitude / controller.MaximumSpeed));
 
 
         Collider[] collsDetectados = Physics.OverlapSphere(transform.position, controller.RangoVision, controller.QueEsTarget);

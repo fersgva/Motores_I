@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,12 +9,14 @@ public class EnemyController : Controller
     [SerializeField] private float rangoVision;
     [SerializeField] private float anguloVision;
     [SerializeField] private float distanciaAtaque;
+    [SerializeField] private float maximumSpeed;
     [SerializeField] private LayerMask queEsTarget;
     [SerializeField] private LayerMask queEsObstaculo;
 
     private State<EnemyController> currentState;
     private NavMeshAgent agent;
     private Transform target;
+    private Animator anim;
 
     private PatrolState patrolState;
     private ChaseState chaseState;
@@ -30,6 +33,12 @@ public class EnemyController : Controller
     public AttackState AttackState { get => attackState;}
     public Transform Target { get => target; set => target = value; }
     public float DistanciaAtaque { get => distanciaAtaque; }
+    public Animator Anim { get => anim;  }
+    public float MaximumSpeed { get => maximumSpeed;  }
+    #endregion
+
+    #region events
+    public event Action OnInitAttackState, OnCancelAttackState;
     #endregion
 
     private void Awake()
@@ -37,7 +46,9 @@ public class EnemyController : Controller
         patrolState = GetComponent<PatrolState>();
         chaseState = GetComponent<ChaseState>();
         attackState = GetComponent<AttackState>();
+
         agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
 
         ChangeState(patrolState);
     }
@@ -63,5 +74,20 @@ public class EnemyController : Controller
         }
         currentState = newState; //Mi estado actual pasa a ser el nuevo.
         currentState.OnEnterState(this);
+    }
+
+    public void InitAttackState()
+    {
+        OnInitAttackState?.Invoke();
+    }
+
+    public void ExitAttackState()
+    {
+        OnCancelAttackState?.Invoke();
+    }
+
+    internal void AttackAnimationFinished()
+    {
+        throw new NotImplementedException();
     }
 }

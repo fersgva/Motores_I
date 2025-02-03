@@ -10,25 +10,26 @@ public class ChaseState : State<EnemyController>
 
     private Coroutine coroutine;
 
+
     public override void OnEnterState(EnemyController controller)
     {
         base.OnEnterState(controller);
-
-        Debug.Log("Entro en el estado de perseguir!");
         controller.Agent.stoppingDistance = controller.DistanciaAtaque;
+
+        controller.Agent.speed = controller.MaximumSpeed;
     }
 
     public override void OnUpdateState()
     {
+        controller.Anim.SetFloat("velocity", (controller.Agent.velocity.magnitude / controller.MaximumSpeed));
 
-        if(!controller.Agent.pathPending && controller.Agent.CalculatePath(controller.Target.position, new NavMeshPath()))
+        if (controller.Agent.CalculatePath(controller.Target.position, new NavMeshPath()))
         {
-            FinalizarCorrutinas();
+            StopWaiting();
 
             controller.Agent.SetDestination(controller.Target.position);
             if (!controller.Agent.pathPending && controller.Agent.remainingDistance <= controller.Agent.stoppingDistance)
             {
-                FinalizarCorrutinas();
                 controller.ChangeState(controller.AttackState);
             }
         }
@@ -48,9 +49,9 @@ public class ChaseState : State<EnemyController>
     }
     public override void OnExitState()
     {
-        FinalizarCorrutinas();
+        StopWaiting();
     }
-    private void FinalizarCorrutinas()
+    private void StopWaiting()
     {
         StopAllCoroutines();
         coroutine = null;
