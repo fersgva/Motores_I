@@ -8,12 +8,14 @@ public class EnemyController : Controller
     [SerializeField] private float rangoVision;
     [SerializeField] private float anguloVision;
     [SerializeField] private float attackDistance;
+    [SerializeField] private float maximumVelocity;
     [SerializeField] private LayerMask queEsTarget;
     [SerializeField] private LayerMask queEsObstaculo;
 
     private State<EnemyController> currentState;
     private NavMeshAgent agent;
     private Transform target;
+    private Animator anim;
 
     private PatrolState patrolState;
     private ChaseState chaseState;
@@ -30,6 +32,8 @@ public class EnemyController : Controller
     public AttackState AttackState { get => attackState;}
     public Transform Target { get => target; set => target = value; }
     public float AttackDistance { get => attackDistance; }
+    public Animator Anim { get => anim; }
+    public float MaximumVelocity { get => maximumVelocity; }
     #endregion
 
     private void Awake()
@@ -38,6 +42,7 @@ public class EnemyController : Controller
         chaseState = GetComponent<ChaseState>();
         attackState = GetComponent<AttackState>();
         agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
 
         ChangeState(patrolState);
     }

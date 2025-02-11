@@ -31,15 +31,16 @@ public class PatrolState : State<EnemyController>
 
         destinoActual = puntosDeRuta[indicePuntoActual];
 
-        controller.Agent.isStopped = false;
-        controller.Agent.speed = patrolVelocity;
         controller.Agent.stoppingDistance = 0f;
-        //controller.Agent.acceleration = 8f;
+        controller.Agent.speed = patrolVelocity;
 
         StartCoroutine(PatrullarYEsperar());
     }
     public override void OnUpdateState()
     {
+        controller.Anim.SetFloat("velocity", controller.Agent.velocity.magnitude / controller.MaximumVelocity);
+
+
         Collider[] collsDetectados = Physics.OverlapSphere(transform.position, controller.RangoVision, controller.QueEsTarget);
         if (collsDetectados.Length > 0) //Hay al menos un target dentro del rango. //1
         {
@@ -65,7 +66,7 @@ public class PatrolState : State<EnemyController>
         while (true)
         {
             controller.Agent.SetDestination(destinoActual); //Voy yendo al destino
-            yield return new WaitUntil(() => !controller.Agent.pathPending && controller.Agent.remainingDistance <= 0.2f); //mE ESPERO en este punto hasta que llegue.
+            yield return new WaitUntil( () => !controller.Agent.pathPending && controller.Agent.remainingDistance <= 0.2f); //mE ESPERO en este punto hasta que llegue.
             yield return new WaitForSeconds(tiempoDeEspera); //Me espero en dicho punto.
             CalcularNuevoDestino();
 

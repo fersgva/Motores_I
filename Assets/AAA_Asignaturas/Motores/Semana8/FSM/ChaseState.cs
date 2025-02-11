@@ -5,8 +5,6 @@ using UnityEngine.AI;
 
 public class ChaseState : State<EnemyController>
 {
-    [SerializeField]
-    private float chaseVelocity;
 
     [SerializeField]
     private float timeBeforeBackToPatrol;
@@ -17,15 +15,15 @@ public class ChaseState : State<EnemyController>
     {
         base.OnEnterState(controller);
 
-        controller.Agent.isStopped = false;
-        controller.Agent.speed = chaseVelocity;
         controller.Agent.stoppingDistance = controller.AttackDistance;
+        controller.Agent.speed = controller.MaximumVelocity;
     }
 
     public override void OnUpdateState()
     {
+        controller.Anim.SetFloat("velocity", controller.Agent.velocity.magnitude / controller.MaximumVelocity);
         //Sólo si el objetivo es alcanzable...
-        if(!controller.Agent.pathPending && controller.Agent.CalculatePath(controller.Target.position, new NavMeshPath()))
+        if (!controller.Agent.pathPending && controller.Agent.CalculatePath(controller.Target.position, new NavMeshPath()))
         {
             StopMyCoroutine();
 
