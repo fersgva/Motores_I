@@ -10,11 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1661211650306158511}
   - component: {fileID: 7203977499926571040}
+  - component: {fileID: 8557659499410829101}
   - component: {fileID: 3838350356541382144}
   - component: {fileID: 7765219388837739902}
   - component: {fileID: 8901647741745906842}
   - component: {fileID: 4438289233253330827}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,9 +49,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc0516ff0a261b42866dd4918914a35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 0}
+  gM: {fileID: 0}
   fuerza: 10
   fuerzaSalto: 8
+  vidaInicial: 100
   distanciaDeteccionSuelo: 0.6
+  distanciaDeteccionInteractuable: 0.8
+--- !u!114 &8557659499410829101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373426570945720926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: f46c27a9b434ac047b38a0bde0e8c54f,
+    type: 3}
+  m_NotificationBehavior: 3
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Gameplay
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!33 &3838350356541382144
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -145,7 +181,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PlayerSystem : MonoBehaviour
 {
-    protected Player main;
+    protected PlayerLifesSO main;
     protected virtual void Awake()
     {
-        main = transform.root.GetComponent<Player>();
+        main = transform.root.GetComponent<PlayerLifesSO>();
     }
 }

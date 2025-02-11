@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class PlayerDynamic : MonoBehaviour
 {
     [SerializeField] private ClasesMotores.CanvasManagerr canvas;
-    [SerializeField] private Motores.GameManagerSO gM;
     [SerializeField] private float fuerza;
     [SerializeField] private float fuerzaSalto;
     [SerializeField] private float vidaInicial;
@@ -20,14 +20,32 @@ public class PlayerDynamic : MonoBehaviour
     private float fuerzaSaltoMaxima;
     private float vidaActual;
     private Vector3 posicionInicial;
+    private PlayerInput input;
 
     // Start is called before the first frame update
     void Start()
     {
-        vidaActual = vidaInicial;
         posicionInicial = transform.position;
         rb = GetComponent<Rigidbody>();
+        input = GetComponent<PlayerInput>();
     }
+
+    private void OnEnable()
+    {
+        input.actions["Jump"].started += Jump;
+    }
+
+    private void Jump(InputAction.CallbackContext obj)
+    {
+        //Y se detecta algo bajo mis pies...
+        if (Physics.Raycast(transform.position, Vector3.down, distanciaDeteccionSuelo))
+        {
+            Debug.DrawRay(transform.position, Vector3.down * distanciaDeteccionSuelo, Color.red, 3);
+            rb.AddForce(Vector3.up.normalized * fuerzaSalto, ForceMode.Impulse);
+
+        }
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -35,17 +53,7 @@ public class PlayerDynamic : MonoBehaviour
         hInput = Input.GetAxisRaw("Horizontal"); //-1, 0, 1
         vInput = Input.GetAxisRaw("Vertical"); //-1, 0, 1
 
-        //Si doy al espacio..
-        if(Input.GetKeyDown(KeyCode.Space)) 
-        {
-            //Y se detecta algo bajo mis pies...
-            if(Physics.Raycast(transform.position, Vector3.down, distanciaDeteccionSuelo))
-            {
-                Debug.DrawRay(transform.position, Vector3.down * distanciaDeteccionSuelo, Color.red, 3);
-                rb.AddForce(Vector3.up.normalized * fuerzaSalto, ForceMode.Impulse);
-
-            }
-        }
+ 
 
         if (Input.GetKeyDown(KeyCode.E))
         {
