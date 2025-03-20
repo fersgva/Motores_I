@@ -8,7 +8,7 @@ public class ChaseState : State<EnemyController>
     [SerializeField]
     private float tiempoEsperaPathNoEncontrado;
 
-    private Coroutine coroutine;
+    private Coroutine coroutinee;
 
 
     public override void OnEnterState(EnemyController controller)
@@ -36,7 +36,7 @@ public class ChaseState : State<EnemyController>
         else
         {
             //Sólo se hace si la corrutina es nula. (oPERADOR de asignación de fusión nula) (asignar un valor sólo si la variable esta a nulo)
-            coroutine ??= StartCoroutine(StopAndReturn());
+            coroutinee ??= StartCoroutine(StopAndReturn());
         }
     }
 
@@ -54,7 +54,7 @@ public class ChaseState : State<EnemyController>
     private void StopWaiting()
     {
         StopAllCoroutines();
-        coroutine = null;
+        coroutinee = null;
     }
 
 
